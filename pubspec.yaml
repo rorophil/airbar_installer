@@ -1,0 +1,59 @@
+name: airbar_installer
+description: "Assistant d'installation AirBar Server pour Windows - Automatise le déploiement en production"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management & Routing
+  get: ^4.6.5
+  
+  # Local Storage & Config
+  get_storage: ^2.1.1
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.1
+  
+  # Responsive Design
+  flutter_screenutil: ^5.9.0
+  
+  # Process Execution (Docker, Git, PowerShell)
+  process_run: ^1.1.0
+  
+  # HTTP & Downloads
+  dio: ^5.4.0
+  http: ^1.2.0
+  
+  # Archive Extraction (ZIP from GitHub)
+  archive: ^3.4.10
+  
+  # URL Launcher (documentation)
+  url_launcher: ^6.2.3
+  
+  # Windows FFI (admin checks, firewall)
+  ffi: ^2.1.0
+  win32: ^5.1.1
+  
+  # Date & Formatting
+  intl: ^0.18.1
+  
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/templates/
+    - assets/docs/
+    - assets/images/

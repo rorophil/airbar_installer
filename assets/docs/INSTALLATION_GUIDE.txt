@@ -1,0 +1,232 @@
+=================================================
+    AirBar Installer - Guide d'Installation
+=================================================
+
+Version: 1.0.0
+Date: April 2026
+
+=================================================
+TABLE DES MATIÈRES
+=================================================
+
+1. Introduction
+2. Prérequis Système
+3. Installation
+4. Premier Démarrage
+5. Configuration du Serveur
+6. Gestion du Serveur
+7. Dépannage
+8. Désinstallation
+9. Support
+
+=================================================
+1. INTRODUCTION
+=================================================
+
+AirBar Installer est un assistant d'installation pour le serveur AirBar,
+une application de gestion de bar pour aéro-clubs.
+
+Cet installateur simplifie le processus de déploiement en automatisant :
+  • L'installation de Docker Desktop
+  • L'installation de Git
+  • Le téléchargement du code source
+  • La compilation du serveur
+  • Le déploiement en production
+  • La configuration du pare-feu
+
+=================================================
+2. PRÉREQUIS SYSTÈME
+=================================================
+
+Configuration minimale requise :
+
+  • Système d'exploitation : Windows 10/11 (64-bit)
+  • Processeur : Intel/AMD 64-bit, 2 cœurs minimum
+  • RAM : 4 GB minimum (8 GB recommandés)
+  • Espace disque : 10 GB libres minimum
+  • PowerShell : Version 5.1 ou supérieure
+  • Connexion Internet : Requise pour l'installation
+  • Droits : Privilèges Administrateur
+
+Logiciels installés automatiquement :
+  • Docker Desktop for Windows
+  • Git for Windows
+
+=================================================
+3. INSTALLATION
+=================================================
+
+Étape 1 : Téléchargement
+  → Téléchargez AirBar_Installer_Setup_1.0.0.exe
+
+Étape 2 : Exécution
+  → Double-cliquez sur le fichier téléchargé
+  → Acceptez l'élévation de privilèges (UAC)
+
+Étape 3 : Assistant d'installation
+  → Suivez les instructions de l'assistant
+  → Choisissez le dossier d'installation
+  → Sélectionnez les options (icônes, démarrage auto)
+
+Étape 4 : Installation
+  → Cliquez sur "Installer"
+  → Patientez pendant l'installation
+  → Cliquez sur "Terminer"
+
+=================================================
+4. PREMIER DÉMARRAGE
+=================================================
+
+Au premier lancement, l'application vous guide à travers :
+
+Écran 1 : Bienvenue
+  → Présentation de l'application
+
+Écran 2 : Vérification Système
+  → Vérification automatique des prérequis
+  → Détection de Docker et Git
+
+Écran 3 : Installation Docker
+  → Installation automatique si nécessaire
+  → Ou détection de l'installation existante
+
+Écran 4 : Installation Git
+  → Installation automatique si nécessaire
+  → Ou détection de l'installation existante
+
+Écran 5 : Configuration
+  → Choix du dossier d'installation du serveur
+  → Configuration des ports réseau
+  → Génération des mots de passe sécurisés
+
+Écran 6 : Téléchargement
+  → Clone des repositories GitHub
+  → Téléchargement du code source
+
+Écran 7 : Compilation
+  → Installation des dépendances
+  → Compilation du serveur Serverpod
+
+Écran 8 : Déploiement
+  → Création des conteneurs Docker
+  → Configuration PostgreSQL et Redis
+  → Démarrage du serveur AirBar
+
+Écran 9 : Succès
+  → Résumé de l'installation
+  → URLs d'accès au serveur
+
+=================================================
+5. CONFIGURATION DU SERVEUR
+=================================================
+
+Accès à la configuration :
+  → Depuis le Dashboard, cliquez sur "Configuration"
+
+Paramètres configurables :
+  • Dossier d'installation
+  • Hôte API (adresse IP ou nom de domaine)
+  • Port API (défaut: 8080)
+  • Port Insights (défaut: 8081)
+  • Port Web (défaut: 8082)
+
+Après modification :
+  → Cliquez sur "Sauvegarder"
+  → Redémarrez le serveur pour appliquer les changements
+
+=================================================
+6. GESTION DU SERVEUR
+=================================================
+
+Dashboard de Gestion :
+  → État des services (API, PostgreSQL, Redis)
+  → Boutons Démarrer / Arrêter / Redémarrer
+
+Logs :
+  → Visualisation en temps réel des logs serveur
+  → Rafraîchissement automatique
+  → Export des logs
+
+Sauvegardes :
+  → Création de sauvegardes manuelles
+  → Restauration depuis une sauvegarde
+  → Gestion des points de restauration
+
+Mises à Jour :
+  → Vérification de nouvelles versions
+  → Mise à jour automatique via Git
+  → Recompilation et redéploiement
+
+Désinstallation :
+  → Arrêt des services
+  → Suppression des conteneurs Docker
+  → Nettoyage des données
+  → Nettoyage du pare-feu
+
+=================================================
+7. DÉPANNAGE
+=================================================
+
+Problème : Docker ne démarre pas
+Solution :
+  → Vérifiez que la virtualisation est activée dans le BIOS
+  → Redémarrez votre ordinateur
+  → Relancez Docker Desktop manuellement
+
+Problème : Le serveur ne répond pas
+Solution :
+  → Vérifiez l'état des conteneurs dans Dashboard
+  → Consultez les logs pour identifier l'erreur
+  → Redémarrez le serveur
+
+Problème : Erreur de connexion à la base de données
+Solution :
+  → Vérifiez que PostgreSQL est démarré
+  → Vérifiez les mots de passe dans config/passwords.yaml
+  → Consultez les logs PostgreSQL
+
+Problème : Port déjà utilisé
+Solution :
+  → Modifiez les ports dans Configuration
+  → Redémarrez le serveur
+  → Vérifiez qu'aucune autre application n'utilise ces ports
+
+=================================================
+8. DÉSINSTALLATION
+=================================================
+
+Option 1 : Désinstallation depuis l'application
+  → Lancez AirBar Installer
+  → Accédez au Dashboard
+  → Cliquez sur "Désinstaller"
+  → Suivez l'assistant de désinstallation
+  → Choisissez les options de nettoyage
+
+Option 2 : Désinstallation Windows
+  → Panneau de configuration
+  → Programmes et fonctionnalités
+  → Sélectionnez "AirBar Installer"
+  → Cliquez sur "Désinstaller"
+
+Note : La désinstallation de l'installer ne supprime pas
+automatiquement Docker ou les données du serveur.
+Utilisez l'option de désinstallation depuis l'application
+pour un nettoyage complet.
+
+=================================================
+9. SUPPORT
+=================================================
+
+Documentation complète :
+  → https://github.com/rorophil/airbar/tree/main/information
+
+Issues GitHub :
+  → https://github.com/rorophil/airbar/issues
+
+Contact :
+  → Pour toute question ou problème, ouvrez un ticket sur GitHub
+
+=================================================
+
+Copyright © 2026 AirBar Team
+Tous droits réservés.

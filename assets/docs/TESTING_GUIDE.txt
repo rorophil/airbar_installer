@@ -1,0 +1,564 @@
+=================================================
+  AirBar Installer - Guide de Test Complet
+=================================================
+
+Version: 1.0.0
+Date: Avril 2026
+
+Ce document décrit la procédure complète de test de
+l'application AirBar Installer.
+
+=================================================
+PRÉPARATION DE L'ENVIRONNEMENT DE TEST
+=================================================
+
+1. Machine de Test
+   - Windows 10/11 64-bit (idéalement VIERGE)
+   - 8 GB RAM minimum
+   - 20 GB d'espace disque libre
+   - Connexion Internet stable
+   
+2. Compte Utilisateur
+   - Privilèges Administrateur requis
+   
+3. Nettoyage Préliminaire (si tests antérieurs)
+   □ Désinstaller Docker Desktop (si présent)
+   □ Désinstaller Git (si présent)
+   □ Supprimer C:\AirBar (si présent)
+   □ Vérifier qu'aucun conteneur Docker ne tourne
+   □ Nettoyer les règles de pare-feu AirBar
+
+=================================================
+PHASE 1: TEST DE BUILD
+=================================================
+
+Test 1.1: Vérification du Projet
+--------------------------------
+□ Cloner le repository airbar_installer
+□ Ouvrir un terminal PowerShell
+□ Exécuter: flutter doctor
+   ✓ Attendu: Aucun problème critique
+□ Exécuter: flutter pub get
+   ✓ Attendu: Dépendances téléchargées sans erreur
+
+Test 1.2: Analyse du Code
+--------------------------------
+□ Exécuter: flutter analyze
+   ✓ Attendu: 0 erreurs (avertissements OK)
+   
+Test 1.3: Build Debug
+--------------------------------
+□ Exécuter: flutter build windows --debug
+   ✓ Attendu: Build réussit
+   ✓ Vérifier: build\windows\x64\runner\Debug\airbar_installer.exe existe
+
+Test 1.4: Build Release
+--------------------------------
+□ Exécuter: flutter build windows --release
+   ✓ Attendu: Build réussit sans erreurs
+   ✓ Vérifier: build\windows\x64\runner\Release\airbar_installer.exe existe
+   ✓ Vérifier: Taille > 10 MB (environ 15-30 MB)
+   ✓ Vérifier: Dossier data\ présent
+
+Test 1.5: Build avec Script Automatique
+--------------------------------
+□ Créer l'icône app_icon.ico (ou copier depuis windows\runner\resources)
+□ Placer dans assets\images\app_icon.ico
+□ Exécuter: .\build.ps1
+   ✓ Attendu: 
+     - Analyse passe
+     - Build Windows réussit
+     - Fichiers vérifiés
+     - Inno Setup compile (si installé)
+   ✓ Vérifier: build\windows\installer\*.exe créé (si Inno Setup)
+
+=================================================
+PHASE 2: TEST DE L'INSTALLATEUR (si créé)
+=================================================
+
+Test 2.1: Installation
+--------------------------------
+□ Lancer AirBar_Installer_Setup_1.0.0.exe
+□ Accepter UAC
+   ✓ Attendu: Assistant d'installation démarre
+□ Page Bienvenue
+   ✓ Vérifier: Texte en français
+   ✓ Vérifier: Logo AirBar affiché (si icône présente)
+□ Page Licence
+   ✓ Vérifier: LICENSE.txt affiché
+   ✓ Cocher "J'accepte"
+□ Page Composants/Tâches
+   ✓ Vérifier: Options icône bureau, menu démarrer
+   ✓ Sélectionner: Icône bureau
+□ Page Installation
+   ✓ Vérifier: Progression affichée
+   ✓ Attendu: Installation complète sans erreur
+□ Page Fin
+   ✓ Cocher: "Lancer AirBar Installer"
+   ✓ Cliquer: Terminer
+
+Test 2.2: Vérification Post-Installation
+--------------------------------
+□ Vérifier: Raccourci bureau créé
+□ Vérifier: Programme dans menu Démarrer
+□ Vérifier: Dossier C:\Program Files\AirBar Installer\ existe
+□ Vérifier: Fichiers présents:
+   - airbar_installer.exe
+   - *.dll
+   - data\
+   - scripts\*.ps1
+   - docs\*.txt
+
+=================================================
+PHASE 3: TEST DE L'ASSISTANT D'INSTALLATION
+=================================================
+
+Test 3.1: Écran Splash
+--------------------------------
+□ Application démarre
+   ✓ Attendu: Logo AirBar affiché 2-3 secondes
+   ✓ Transition automatique vers Welcome
+
+Test 3.2: Écran Welcome
+--------------------------------
+□ Vérifier: Texte de bienvenue affiché
+□ Vérifier: Bouton "Commencer" visible
+□ Cliquer: Commencer
+   ✓ Transition vers System Check
+
+Test 3.3: Écran System Check
+--------------------------------
+□ Observer: Vérifications en cours
+   ✓ Windows Version
+   ✓ Architecture 64-bit
+   ✓ RAM disponible
+   ✓ Espace disque
+   ✓ PowerShell version
+   ✓ Docker présent/absent
+   ✓ Git présent/absent
+□ Si Docker ABSENT:
+   ✓ Attendu: Message "Docker non détecté"
+   ✓ Bouton "Suivant" activé
+□ Si Docker PRÉSENT:
+   ✓ Attendu: Message "Docker détecté"
+   ✓ Bouton "Suivant" activé
+□ Cliquer: Suivant
+
+Test 3.4: Écran Docker Install
+--------------------------------
+Cas A - Docker non installé:
+□ Vérifier: Message "Installation de Docker requise"
+□ Cliquer: "Télécharger et Installer Docker"
+   ✓ Attendu: Téléchargement démarre
+   ✓ Barre de progression affichée
+   ✓ Installation Docker lancée
+   ATTENTION: Nécessite REDÉMARRAGE de la machine
+   □ Après redémarrage: Relancer AirBar Installer
+   □ Refaire System Check
+   ✓ Docker maintenant détecté
+
+Cas B - Docker déjà installé:
+□ Vérifier: Message "Docker détecté"
+□ Vérifier: Bouton "Suivant" activé
+□ Cliquer: Suivant
+
+Test 3.5: Écran Git Install
+--------------------------------
+Cas A - Git non installé:
+□ Vérifier: Message "Installation de Git requise"
+□ Cliquer: "Télécharger et Installer Git"
+   ✓ Attendu: Téléchargement démarre
+   ✓ Installation Git lancée
+   ✓ Après installation: Git détecté
+   
+Cas B - Git déjà installé:
+□ Vérifier: Message "Git détecté"
+□ Cliquer: Suivant
+
+Test 3.6: Écran Configuration
+--------------------------------
+□ Vérifier: Champs pré-remplis:
+   - Dossier: C:\AirBar
+   - Hôte: localhost
+   - Port API: 8080
+   - Port Insights: 8081
+   - Port Web: 8082
+   
+□ Test: Modifier dossier d'installation
+   □ Cliquer: Parcourir
+   □ Sélectionner: D:\TestAirBar (ou autre)
+   ✓ Attendu: Chemin mis à jour
+   
+□ Test: Valider ports invalides
+   □ Entrer port: 999999
+   ✓ Attendu: Message d'erreur
+   □ Entrer port: abc
+   ✓ Attendu: Message d'erreur
+   
+□ Restaurer valeurs valides
+□ Cliquer: Suivant
+   ✓ Attendu: Validation réussit
+
+Test 3.7: Écran Download
+--------------------------------
+□ Observer: Téléchargement en cours
+   ✓ Message: "Clonage de airbar..."
+   ✓ Barre de progression
+   ✓ Message: "Clonage de airbar_backend..."
+   ✓ Barre de progression
+   
+□ En cas d'erreur:
+   ✓ Message d'erreur clair affiché
+   ✓ Bouton "Réessayer" disponible
+   
+□ Succès:
+   ✓ Message: "Téléchargement terminé"
+   ✓ Bouton "Suivant" activé
+   
+□ Cliquer: Suivant
+
+Test 3.8: Écran Build
+--------------------------------
+□ Observer: Compilation en cours
+   ✓ Message: "Installation des dépendances..."
+   ✓ Message: "Génération du code Serverpod..."
+   ✓ Barre de progression globale
+   
+□ Durée attendue: 5-10 minutes
+□ Vérifier: Logs affichés dans zone de texte
+   
+□ Succès:
+   ✓ Message: "Compilation terminée avec succès"
+   ✓ Bouton "Suivant" activé
+   
+□ Cliquer: Suivant
+
+Test 3.9: Écran Deployment
+--------------------------------
+□ Observer: Déploiement en cours
+   ✓ Message: "Création des fichiers de configuration..."
+   ✓ Message: "Démarrage de PostgreSQL..."
+   ✓ Message: "Démarrage de Redis..."
+   ✓ Message: "Démarrage du serveur AirBar..."
+   ✓ Barre de progression
+   
+□ Vérifier avec Docker Desktop:
+   □ Ouvrir Docker Desktop
+   □ Onglet Containers
+   ✓ Attendu: 3 conteneurs en cours d'exécution:
+     - airbar_postgres (port 5432)
+     - airbar_redis (port 6379)
+     - airbar_server (ports 8080, 8081, 8082)
+   
+□ Succès:
+   ✓ Message: "Déploiement terminé avec succès"
+   ✓ Bouton "Suivant" activé
+   
+□ Cliquer: Suivant
+
+Test 3.10: Écran Success
+--------------------------------
+□ Vérifier: Résumé affiché
+   ✓ URL API: http://localhost:8080
+   ✓ URL Insights: http://localhost:8081
+   ✓ URL Web: http://localhost:8082
+   
+□ Tester URLs:
+   □ Ouvrir navigateur
+   □ Aller à: http://localhost:8080/
+   ✓ Attendu: Page Serverpod ou JSON response
+   
+□ Boutons disponibles:
+   □ "Accéder au Dashboard" - vers gestion
+   □ "Terminer" - ferme l'application
+   
+□ Cliquer: Accéder au Dashboard
+
+=================================================
+PHASE 4: TEST DU DASHBOARD DE GESTION
+=================================================
+
+Test 4.1: Dashboard Principal
+--------------------------------
+□ Vérifier: Dashboard affiché
+   
+□ Section État des Services:
+   ✓ API Server: En cours d'exécution (vert)
+   ✓ PostgreSQL: En cours d'exécution (vert)
+   ✓ Redis: En cours d'exécution (vert)
+   
+□ Test: Arrêter le serveur
+   □ Cliquer: "Arrêter"
+   ✓ Attendu: Confirmation demandée
+   □ Confirmer
+   ✓ Attendu: Services s'arrêtent
+   ✓ États passent à "Arrêté" (rouge)
+   ✓ Vérifier dans Docker Desktop: Conteneurs arrêtés
+   
+□ Test: Démarrer le serveur
+   □ Cliquer: "Démarrer"
+   ✓ Attendu: Services démarrent
+   ✓ États passent à "En cours" (vert)
+   
+□ Test: Redémarrer le serveur
+   □ Cliquer: "Redémarrer"
+   ✓ Attendu: Arrêt puis démarrage
+   ✓ États reviennent à "En cours"
+   
+□ Navigation:
+   □ Menu latéral visible
+   ✓ Options: Dashboard, Logs, Backups, Config, Update, Uninstall
+
+Test 4.2: Module Logs
+--------------------------------
+□ Cliquer: Logs dans le menu
+   
+□ Vérifier: Page Logs affichée
+   ✓ Zone de logs visible
+   ✓ Logs du serveur affichés
+   ✓ Rafraîchissement automatique
+   
+□ Test: Pause auto-refresh
+   □ Cliquer: "Pause"
+   ✓ Attendu: Rafraîchissement arrêté
+   □ Cliquer: "Reprendre"
+   ✓ Attendu: Rafraîchissement reprend
+   
+□ Test: Export logs
+   □ Cliquer: "Exporter"
+   □ Choisir emplacement
+   ✓ Attendu: Fichier .txt créé
+   ✓ Vérifier: Contenu du fichier = logs affichés
+
+Test 4.3: Module Backups
+--------------------------------
+□ Cliquer: Backups dans le menu
+   
+□ Vérifier: Page Backups affichée
+   ✓ Liste des sauvegardes (vide au début)
+   
+□ Test: Créer une sauvegarde
+   □ Cliquer: "Créer une Sauvegarde"
+   ✓ Attendu: Processus de sauvegarde démarre
+   ✓ Message: "Arrêt des services..."
+   ✓ Message: "Copie des données..."
+   ✓ Message: "Sauvegarde créée avec succès"
+   ✓ Nouvelle sauvegarde apparaît dans la liste
+   ✓ Nom format: backup_YYYYMMDD_HHMMSS
+   
+□ Test: Restaurer une sauvegarde
+   □ Sélectionner une sauvegarde
+   □ Cliquer: "Restaurer"
+   ✓ Attendu: Confirmation demandée
+   □ Confirmer
+   ✓ Message: "Arrêt des services..."
+   ✓ Message: "Restauration en cours..."
+   ✓ Message: "Redémarrage..."
+   ✓ Message: "Restauration réussie"
+   
+□ Test: Supprimer une sauvegarde
+   □ Sélectionner une sauvegarde
+   □ Cliquer: "Supprimer"
+   ✓ Attendu: Confirmation demandée
+   □ Confirmer
+   ✓ Sauvegarde supprimée de la liste
+
+Test 4.4: Module Config
+--------------------------------
+□ Cliquer: Config dans le menu
+   
+□ Vérifier: Formulaire de configuration
+   ✓ Champs pré-remplis avec valeurs actuelles
+   
+□ Test: Modifier configuration
+   □ Changer Hôte API: 192.168.1.100
+   □ Changer Port API: 9080
+   □ Cliquer: "Sauvegarder"
+   ✓ Attendu: Message "Configuration sauvegardée"
+   ✓ Bouton "Redémarrer pour appliquer" apparaît
+   
+□ Test: Redémarrer avec nouvelle config
+   □ Cliquer: "Redémarrer le Serveur"
+   ✓ Services redémarrent
+   ✓ Nouvelle URL: http://192.168.1.100:9080
+   
+□ Test: Valider pare-feu
+   □ Vérifier règles de pare-feu Windows
+   ✓ Panneau de configuration > Pare-feu
+   ✓ Règles entrantes contiennent:
+     - AirBar API Server (port modifié)
+     - AirBar PostgreSQL (5432)
+     - AirBar Redis (6379)
+
+Test 4.5: Module Update
+--------------------------------
+□ Cliquer: Update dans le menu
+   
+□ Vérifier: Page de mise à jour affichée
+   ✓ Version actuelle affichée
+   
+□ Test: Vérifier les mises à jour
+   □ Cliquer: "Vérifier"
+   ✓ Messages possibles:
+     - "Aucune mise à jour disponible"
+     - OU "Nouvelle version disponible: X.Y.Z"
+   
+□ Si mise à jour disponible:
+   □ Cliquer: "Mettre à Jour"
+   ✓ Message: "Arrêt des services..."
+   ✓ Message: "Récupération des mises à jour..."
+   ✓ Message: "Recompilation..."
+   ✓ Message: "Redémarrage..."
+   ✓ Message: "Mise à jour terminée"
+   
+□ Test: Mise à jour manuelle
+   □ Cliquer: "Forcer la Mise à Jour"
+   ✓ Attendu: Processus git pull + rebuild
+
+Test 4.6: Module Uninstall
+--------------------------------
+□ Cliquer: Uninstall dans le menu
+   
+□ Vérifier: Page de désinstallation
+   ✓ Avertissement affiché
+   ✓ Options:
+     - Supprimer Docker
+     - Supprimer les données
+     - Nettoyer pare-feu
+   
+□ Test: Désinstallation complète
+   □ Cocher toutes les options
+   □ Cliquer: "Désinstaller"
+   ✓ Confirmation demandée (2 fois)
+   □ Confirmer
+   ✓ Message: "Arrêt des conteneurs..."
+   ✓ Message: "Suppression des conteneurs..."
+   ✓ Message: "Suppression des volumes..."
+   ✓ Message: "Nettoyage du pare-feu..."
+   ✓ Message: "Suppression des fichiers..."
+   
+□ Vérifier nettoyage:
+   □ Docker Desktop
+   ✓ Conteneurs AirBar supprimés
+   ✓ Volumes supprimés
+   
+   □ Système de fichiers
+   ✓ C:\AirBar supprimé
+   
+   □ Pare-feu Windows
+   ✓ Règles AirBar supprimées
+   
+   ✓ Application se ferme
+
+=================================================
+PHASE 5: TESTS DE RÉGRESSION
+=================================================
+
+Test 5.1: Réinstallation
+--------------------------------
+□ Relancer l'installateur
+□ Refaire l'installation complète
+   ✓ Attendu: Installation réussit
+   ✓ Aucun conflit avec restes précédents
+
+Test 5.2: Installation sur chemin personnalisé
+--------------------------------
+□ Lors de Configuration, choisir D:\CustomPath
+   ✓ Attendu: Installation dans le chemin choisi
+   ✓ Serveur fonctionne correctement
+
+Test 5.3: Ports personnalisés
+--------------------------------
+□ Lors de Configuration, utiliser:
+   - API: 9080
+   - Insights: 9081
+   - Web: 9082
+   ✓ Attendu: Serveur accessible sur ces ports
+
+=================================================
+PHASE 6: TESTS DE STRESS ET STABILITÉ
+=================================================
+
+Test 6.1: Arrêt/Démarrage répétés
+--------------------------------
+□ Depuis Dashboard, faire 10 cycles:
+   - Arrêter
+   - Attendre 5 secondes
+   - Démarrer
+   ✓ Attendu: Fonctionne à chaque fois
+
+Test 6.2: Sauvegardes multiples
+--------------------------------
+□ Créer 5 sauvegardes consécutives
+   ✓ Attendu: Toutes créées avec noms uniques
+   ✓ Restauration de n'importe laquelle fonctionne
+
+Test 6.3: Logs sur longue durée
+--------------------------------
+□ Laisser le serveur tourner 30 minutes
+□ Vérifier module Logs
+   ✓ Attendu: Logs s'accumulent normalement
+   ✓ Pas de ralentissement UI
+
+=================================================
+PROBLÈMES CONNUS ET SOLUTIONS
+=================================================
+
+Problème: Docker ne démarre pas après installation
+Solution: Redémarrer Windows
+
+Problème: Ports déjà utilisés
+Solution: Modifier dans Config ou arrêter l'autre application
+
+Problème: Permission denied lors du build
+Solution: Désactiver antivirus temporairement
+
+Problème: Git clone échoue
+Solution: Vérifier connexion Internet, proxy
+
+=================================================
+CRITÈRES DE SUCCÈS
+=================================================
+
+Pour valider la release, TOUS ces critères:
+
+□ Build sans erreurs
+□ Installateur créé et fonctionnel
+□ Installation complète réussit
+□ Tous les 16 écrans fonctionnent
+□ Services Docker démarrent
+□ URLs accessibles
+□ Logs visibles
+□ Sauvegardes fonctionnent
+□ Configuration modifiable
+□ Désinstallation propre
+□ Réinstallation possible
+□ Aucun crash durant 1h d'utilisation
+
+=================================================
+RAPPORT DE TEST
+=================================================
+
+Date du test: _______________________
+Testeur: ___________________________
+Machine: ___________________________
+OS Version: ________________________
+
+Résultat Global: □ PASS  □ FAIL
+
+Nombre de tests:
+- Réussis: _____
+- Échoués: _____
+- Non testés: _____
+
+Bugs découverts:
+________________________________
+________________________________
+________________________________
+
+Recommandations:
+________________________________
+________________________________
+________________________________
+
+Signature: __________________________

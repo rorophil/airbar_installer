@@ -1,0 +1,95 @@
+=================================================
+    GUIDE - Création de l'Icône AirBar
+=================================================
+
+L'application nécessite une icône au format .ico pour Windows.
+
+=================================================
+SPÉCIFICATIONS REQUISES
+=================================================
+
+Format: .ico (multi-résolution)
+Résolutions à inclure:
+  • 16x16 pixels
+  • 32x32 pixels
+  • 48x48 pixels
+  • 64x64 pixels
+  • 128x128 pixels
+  • 256x256 pixels
+
+Emplacement: assets/images/app_icon.ico
+
+=================================================
+THÈME DE DESIGN SUGGÉRÉ
+=================================================
+
+Concept: Avion + Verre/Bar
+Couleurs: 
+  • Bleu (#2196F3) - Primary
+  • Orange (#FF9800) - Accent
+  • Blanc (#FFFFFF)
+
+Style: Moderne, épuré, professionnel
+
+=================================================
+OUTILS RECOMMANDÉS
+=================================================
+
+Option 1: Adobe Illustrator + Plugin ICO
+  → Créez le design en vectoriel
+  → Exportez en .ico avec toutes les résolutions
+
+Option 2: GIMP (Gratuit)
+  → Installez le plugin "Save as ICO"
+  → Créez l'image en 256x256
+  → File > Export As > .ico
+  → Sélectionnez toutes les résolutions
+
+Option 3: Online ICO Converter
+  → Créez une image PNG 256x256
+  → Utilisez https://icoconvert.com/
+  → Téléchargez le .ico généré
+
+=================================================
+DESSIN SUGGÉRÉ (ASCII Art comme référence)
+=================================================
+
+      /\
+     /  \        <- Aile d'avion (bleu)
+    /____\
+   [======]      <- Fuselage
+      ||
+     /||\        <- Verre (orange)
+    | || |
+    |____|
+
+=================================================
+INSTALLATION DE L'ICÔNE
+=================================================
+
+1. Créez votre icône selon les spécifications
+2. Nommez-la "app_icon.ico"
+3. Placez-la dans: assets/images/app_icon.ico
+4. L'icône sera automatiquement utilisée par:
+   • L'exécutable Windows
+   • L'installateur Inno Setup
+   • Les raccourcis du bureau
+
+=================================================
+FICHIER TEMPORAIRE
+=================================================
+
+Si vous n'avez pas encore d'icône, vous pouvez:
+
+Option A: Utiliser l'icône par défaut de Flutter
+  → Copiez: windows/runner/resources/app_icon.ico
+  → Vers: assets/images/app_icon.ico
+
+Option B: Créer une icône simple avec Paint
+  → Créez un carré coloré de 256x256
+  → Convertissez-le en .ico en ligne
+
+=================================================
+
+Pour toute question sur le design:
+https://github.com/rorophil/airbar/issues
