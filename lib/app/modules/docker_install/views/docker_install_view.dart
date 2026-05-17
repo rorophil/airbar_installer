@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/values/app_colors.dart';
-import '../../../core/values/app_strings.dart';
-import '../../../services/docker_service.dart';
 import '../controllers/docker_install_controller.dart';
 
 class DockerInstallView extends GetView<DockerInstallController> {
@@ -79,11 +77,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.download,
-          size: 80.w,
-          color: AppColors.primary,
-        ),
+        Icon(Icons.download, size: 80.w, color: AppColors.primary),
         SizedBox(height: 24.h),
         Text(
           'Prêt à installer Docker Desktop',
@@ -98,10 +92,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
           'L\'installation va télécharger et installer Docker Desktop.\n'
           'Cette opération peut prendre plusieurs minutes.',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.textSecondary,
-          ),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
         ),
       ],
     );
@@ -123,7 +114,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
           ),
         ),
         SizedBox(height: 32.h),
-        
+
         Text(
           'Installation en cours...',
           style: TextStyle(
@@ -132,9 +123,9 @@ class DockerInstallView extends GetView<DockerInstallController> {
             color: AppColors.textPrimary,
           ),
         ),
-        
+
         SizedBox(height: 16.h),
-        
+
         // Progress percentage
         if (controller.progress > 0)
           Text(
@@ -145,9 +136,9 @@ class DockerInstallView extends GetView<DockerInstallController> {
               color: AppColors.primary,
             ),
           ),
-        
+
         SizedBox(height: 16.h),
-        
+
         // Status message
         Container(
           padding: EdgeInsets.all(16.w),
@@ -191,9 +182,9 @@ class DockerInstallView extends GetView<DockerInstallController> {
             ],
           ),
         ),
-        
+
         SizedBox(height: 24.h),
-        
+
         Text(
           'Cette opération peut prendre plusieurs minutes.\n'
           'Merci de patienter...',
@@ -212,11 +203,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.check_circle,
-          size: 80.w,
-          color: AppColors.stepSuccess,
-        ),
+        Icon(Icons.check_circle, size: 80.w, color: AppColors.stepSuccess),
         SizedBox(height: 24.h),
         Text(
           'Docker Desktop installé avec succès !',
@@ -232,9 +219,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
           decoration: BoxDecoration(
             color: AppColors.stepSuccess.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.w),
-            border: Border.all(
-              color: AppColors.stepSuccess.withOpacity(0.3),
-            ),
+            border: Border.all(color: AppColors.stepSuccess.withOpacity(0.3)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -247,10 +232,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
               SizedBox(width: 12.w),
               Text(
                 'Docker est prêt à être utilisé',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: AppColors.stepSuccess,
-                ),
+                style: TextStyle(fontSize: 14.sp, color: AppColors.stepSuccess),
               ),
             ],
           ),
@@ -263,11 +245,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.error,
-          size: 80.w,
-          color: AppColors.stepError,
-        ),
+        Icon(Icons.error, size: 80.w, color: AppColors.stepError),
         SizedBox(height: 24.h),
         Text(
           'Erreur d\'installation',
@@ -283,26 +261,17 @@ class DockerInstallView extends GetView<DockerInstallController> {
           decoration: BoxDecoration(
             color: AppColors.stepError.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.w),
-            border: Border.all(
-              color: AppColors.stepError.withOpacity(0.3),
-            ),
+            border: Border.all(color: AppColors.stepError.withOpacity(0.3)),
           ),
           child: Column(
             children: [
-              Icon(
-                Icons.warning_amber,
-                size: 24.w,
-                color: AppColors.stepError,
-              ),
+              Icon(Icons.warning_amber, size: 24.w, color: AppColors.stepError),
               SizedBox(height: 8.h),
               Text(
                 controller.errorMsg.isNotEmpty
                     ? controller.errorMsg
                     : 'Une erreur est survenue lors de l\'installation',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: AppColors.stepError,
-                ),
+                style: TextStyle(fontSize: 14.sp, color: AppColors.stepError),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -313,10 +282,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
           'Vous pouvez réessayer l\'installation automatique ou\n'
           'installer Docker Desktop manuellement depuis docker.com',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColors.textSecondary,
-          ),
+          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
       ],
     );
@@ -332,10 +298,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
             onPressed: controller.skipInstallation,
             child: Text(
               'Ignorer',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
             ),
           )
         else
@@ -357,10 +320,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                 ),
-                child: Text(
-                  'Réessayer',
-                  style: TextStyle(fontSize: 16.sp),
-                ),
+                child: Text('Réessayer', style: TextStyle(fontSize: 16.sp)),
               ),
               SizedBox(width: 16.w),
             ],
@@ -382,10 +342,7 @@ class DockerInstallView extends GetView<DockerInstallController> {
                 ),
                 child: Row(
                   children: [
-                    Text(
-                      'Continuer',
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
+                    Text('Continuer', style: TextStyle(fontSize: 16.sp)),
                     SizedBox(width: 8.w),
                     Icon(Icons.arrow_forward, size: 20.w),
                   ],

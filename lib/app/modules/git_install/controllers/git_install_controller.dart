@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import '../../../services/git_service.dart';
 import '../../../routes/app_pages.dart';
 
@@ -24,7 +23,7 @@ class GitInstallController extends GetxController {
 
   Future<void> startInstallation() async {
     final success = await _gitService.installGit();
-    
+
     if (success) {
       // Auto-navigate to next step after 2 seconds
       await Future.delayed(const Duration(seconds: 2));
@@ -34,7 +33,7 @@ class GitInstallController extends GetxController {
 
   Future<void> retryInstallation() async {
     await _gitService.checkGitStatus();
-    
+
     if (_gitService.status.value == GitStatus.notInstalled) {
       startInstallation();
     } else {
@@ -45,7 +44,8 @@ class GitInstallController extends GetxController {
   void skipInstallation() {
     Get.defaultDialog(
       title: 'Attention',
-      middleText: 'Git est requis pour cloner le dépôt AirBar Backend.\n\n'
+      middleText:
+          'Git est requis pour cloner le dépôt AirBar Backend.\n\n'
           'Sans Git, le téléchargement sera effectué en archive ZIP, ce qui peut être moins fiable.',
       textConfirm: 'Continuer sans Git',
       textCancel: 'Annuler',

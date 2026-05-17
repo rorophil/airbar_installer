@@ -63,6 +63,9 @@ class ConfigurationService extends GetxService {
       // Update config/production.yaml
       await _updateProductionConfig(serverPath, host, port, iPort, wPort);
 
+      // Update config/passwords.yaml
+      await _updatePasswordsYaml(serverPath);
+
       isSaving.value = false;
       return true;
     } catch (e) {

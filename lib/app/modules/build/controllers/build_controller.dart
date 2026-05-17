@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:process_run/process_run.dart';
 import '../../../services/storage_service.dart';
 import '../../../services/configuration_service.dart';
 import '../../../routes/app_pages.dart';
