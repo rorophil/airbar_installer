@@ -216,11 +216,11 @@ class _ModeCard extends StatelessWidget {
                 ),
               ),
 
-            if (isRecommended) SizedBox(height: 16.h),
+            if (isRecommended) SizedBox(height: 8.h),
 
             // Icon
             Container(
-              padding: EdgeInsets.all(20.w),
+              padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.primary
@@ -229,12 +229,12 @@ class _ModeCard extends StatelessWidget {
               ),
               child: Icon(
                 icon,
-                size: 48.sp,
+                size: 40.sp,
                 color: isSelected ? AppColors.textWhite : AppColors.primary,
               ),
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: 12.h),
 
             // Title
             Text(
@@ -260,7 +260,7 @@ class _ModeCard extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: 12.h),
 
             // Selection Indicator
             Icon(

@@ -1,0 +1,8 @@
+@echo off
+set BACKUP_DIR=C:\airbar_production\backups
+if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
+
+set TIMESTAMP=%date:~-4%%date:~3,2%%date:~0,2%_%time:~0,2%%time:~3,2%%time:~6,2%
+set TIMESTAMP=%TIMESTAMP: =0%
+
+docker exec airbar_postgres pg_dump -U postgres airbar_backend > "%BACKUP_DIR%\backup_%TIMESTAMP%.sql"
