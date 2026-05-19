@@ -107,15 +107,17 @@ class SystemCheckService extends GetxService {
         return;
       }
 
-      // Get Windows version
-      final result = await Shell().run('systeminfo | findstr /B /C:"OS Name"');
-      final output = result.outText;
+      // Get Windows version via PowerShell (wmic/pipe non supporté)
+      final result = await Shell().run(
+        'powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).Caption"',
+      );
+      final output = result.outText.trim();
 
       if (output.contains('Windows 10') ||
           output.contains('Windows 11') ||
           output.contains('Server')) {
         check.status.value = CheckStatus.success;
-        check.message.value = 'Windows compatible détecté';
+        check.message.value = output.isNotEmpty ? output : 'Windows compatible détecté';
       } else {
         check.status.value = CheckStatus.warning;
         check.message.value = 'Version Windows non testée';
@@ -132,9 +134,9 @@ class SystemCheckService extends GetxService {
 
     try {
       final result = await Shell().run(
-        'wmic ComputerSystem get TotalPhysicalMemory',
+        'powershell -NoProfile -Command "(Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory"',
       );
-      final output = result.outText;
+      final output = result.outText.trim();
 
       // Extract RAM value (in bytes)
       final match = RegExp(r'(\d+)').firstMatch(output);
@@ -165,11 +167,11 @@ class SystemCheckService extends GetxService {
     check.status.value = CheckStatus.checking;
 
     try {
-      // Check C: drive space
+      // Check C: drive space via PowerShell (wmic supprimé dans Windows 11 récent)
       final result = await Shell().run(
-        'wmic logicaldisk where "DeviceID=\'C:\'" get FreeSpace',
+        'powershell -NoProfile -Command "(Get-PSDrive C).Free"',
       );
-      final output = result.outText;
+      final output = result.outText.trim();
 
       final match = RegExp(r'(\d+)').firstMatch(output);
       if (match != null) {
@@ -200,10 +202,13 @@ class SystemCheckService extends GetxService {
     check.status.value = CheckStatus.checking;
 
     try {
-      // Try to run a command that requires admin rights
-      final result = await Shell().run('net session');
+      // Vérification des droits admin via PowerShell
+      final result = await Shell().run(
+        'powershell -NoProfile -Command "([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)"',
+      );
+      final output = result.outText.trim().toLowerCase();
 
-      if (result.errText.isEmpty) {
+      if (output == 'true') {
         check.status.value = CheckStatus.success;
         check.message.value = 'Privilèges administrateur détectés';
       } else {
